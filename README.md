@@ -4,9 +4,11 @@ Terminal version of snake
 https://user-images.githubusercontent.com/59376544/150813794-9dda8700-f3fe-4e3e-8701-463d2af1593a.mov
 
 <h3>To start</h3>
-Enter 'ruby game.rb' into the terminal. 
-Press one of the up/down/left/right keys to begin. 
-To quit, press q or 'Esc'.
+<ul>
+  <li>Enter 'ruby game.rb' into the terminal.</li>
+  <li>Press one of the up/down/left/right keys to begin. </li>
+  <li>To quit, press q or 'Esc'.</li>
+</ul>
 
 <h3>Future improvements</h3>
 <ol>
