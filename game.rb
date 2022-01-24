@@ -1,14 +1,15 @@
 require_relative "board"
 require_relative "cursor"
+require "io/console"
 
 class Game
 
-  attr_reader :board
+  attr_reader :board, :speed
 
   def initialize
     @board = Board.new
-    # @game_over = false
     @cursor = Cursor.new(board)
+    @speed = 1.5/30.0
   end
 
   def win?
@@ -26,15 +27,11 @@ class Game
 
 
   def play
+    board.render
+    @cursor.get_input
+
     until !self.board.snake.alive
-      board.render
-      @cursor.get_input
-      # sleep 2
-      board.snake.move
-      system("clear")
-      # p board.snake.snake_body_pos
-      # p board.snake.head.pos
-      # p board.snake.alive
+      check_if_input
     end
 
     if win?
@@ -45,40 +42,32 @@ class Game
   end
 
 
-  # def direction
-    # input = gets.chomp
-    # case input
-    # when "u"
-    #   :up
-    # when "d"
-    #   :down
-    # when "l"
-    #   :left
-    # when "r"
-    #   :right
-    # end
-  # end
+  def read1maybe
+    return $stdin.read_nonblock 3
+  rescue Errno::EAGAIN
+    return ''
+  end
+  
+  def check_if_input
+    system 'stty cbreak'
+    while true
+      input = read1maybe
+      if input.length > 0 
+        p input
+        key = KEYMAP[input]
+        @cursor.handle_key(key)
+        break 
+      end
+      system("clear")
+      board.render
+      sleep(speed)
+      board.snake.move
+      break if !self.board.snake.alive
+    end
+    system 'stty cooked'
+  end
 
 end
 
 g = Game.new
 g.play
-# p g.board.snake.snake_body_pos
-
-# b = Board.new
-# b.render
-# s = b.snake
-# s.direction = :up
-# p b.snake.snake_body_pos
-# s.move
-# p b.snake.snake_body_pos
-# s.move
-# p b.snake.snake_body_pos
-# b.render
-
-# # b.render
-
-# # # b.update_possible_pos
-# # # p b.possible_pos
-# # b.render
-# # # p b

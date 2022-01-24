@@ -13,11 +13,8 @@ class Snake
   }.freeze
 
   def initialize(board)
-    @body = [SnakeSegment.new(board, [20,20]),
-    SnakeSegment.new(board, [20,21]),
-    SnakeSegment.new(board, [20,22]),
-    SnakeSegment.new(board, [20,23]) ]
-    @head = SnakeSegment.new(board, [20,20])
+    @body = [SnakeSegment.new(board, [20,30])]
+    @head = SnakeSegment.new(board, [20,30])
     @board = board
     @direction = nil
     @points = 0
@@ -32,21 +29,21 @@ class Snake
     tail_pos = body[-1].pos
     body.pop
     board[tail_pos] = NullPixel.instance
-    # @head = body.first
   end
 
   def possible_dirs
     case direction
+    when nil
+      [:up, :down, :left, :right]
     when :up, :down
-      DIRECTIONS.select { |key, val| key == :left || key == :right }
+      [:left, :right]
     when :left, :right
-      DIRECTIONS.select { |key, val| key == :up || key == :down }
+      [:up, :down]
     end
   end
 
-  def move
-    
-    dir = DIRECTIONS[direction] # ex: up is [0, -1]
+  def move  
+    dir = DIRECTIONS[direction]
     cur_x, cur_y = head.pos
     diff_x, diff_y = dir
     next_pos = [cur_x + diff_x, cur_y + diff_y]
@@ -65,12 +62,6 @@ class Snake
       end
       self.head = new_head
     end
-
-  end
-
-
-  def eat_fruit
-    
   end
 
   def snake_body_pos

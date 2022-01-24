@@ -16,9 +16,6 @@ class Board
       row.each_with_index { |pix, j| possible_pos << [i, j] if pix.is_a?(NullPixel) }
     end
     @fruit_exists = false
-
-    # @grid[0][0] = SnakeSegment.new(self)
-    # @grid[1][1] = Fruit.new(self)
   end
   
   def render
@@ -33,6 +30,8 @@ class Board
       puts "|" + row.map{ |pix| pix.to_s }.join("") + "|"
     end
     puts "-"*120
+    puts "Press one of the up/down/left/arrow keys to begin" if snake.direction.nil?
+    puts "Press 'q' or 'Esc' to quit"
     puts "Score: #{snake.points}"
   end
 
@@ -56,7 +55,6 @@ class Board
   def update_grid_snake
     snake.body.each do |segment|
       self[segment.pos] = segment
-      # p segment
     end
   end
 
